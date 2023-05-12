@@ -2,6 +2,7 @@
 
 using IMG_API_Data_Obtainer.Models.Internal;
 using IMG_API_Data_Obtainer.TransportModels;
+
 using GenderMixType = IMG_API_Data_Obtainer.TransportModels.GenderMixType;
 
 public sealed class FeedTwoDuoTeamsCollectionDescription : FeedTwoTeamsCollectionDescription
@@ -43,12 +44,12 @@ public sealed class FeedTwoDuoTeamsCollectionDescription : FeedTwoTeamsCollectio
 
         if (teamAPlayers.Count != 2)
         {
-            throw new ArgumentException($"Collection {teamAPlayers} does not contain 2 required elements");
+            throw new ArgumentException($"Collection {nameof(teamAPlayers)} does not contain 2 required elements");
         }
 
         if (teamBPlayers.Count != 2)
         {
-            throw new ArgumentException($"Collection {teamBPlayers} does not contain 2 required elements");
+            throw new ArgumentException($"Collection {nameof(teamBPlayers)} does not contain 2 required elements");
         }
 
         foreach(var entryA in teamAPlayers)

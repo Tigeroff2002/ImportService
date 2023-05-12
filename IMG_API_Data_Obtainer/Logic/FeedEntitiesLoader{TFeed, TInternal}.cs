@@ -1,5 +1,5 @@
-﻿using ADF.Library.Models.Mapping;
-using IMG_API_Data_Obtainer.Logic.Abstractions;
+﻿using IMG_API_Data_Obtainer.Logic.Abstractions;
+using IMG_API_Data_Obtainer.Models;
 
 namespace IMG_API_Data_Obtainer.Logic;
 
@@ -14,6 +14,7 @@ namespace IMG_API_Data_Obtainer.Logic;
 /// </typeparam>
 public sealed class FeedEntitiesLoader<TFeed, TInternal> : IFeedEntitiesLoader<TFeed, TInternal>
     where TFeed : MappableEntity<TInternal>
+    where TInternal : IInternalEntityMarker
 {
     /// <summary>
     /// Создаёт экземпляр типа <see cref="FeedEntitiesLoader{TFeed, TInternal}"/>.
@@ -45,9 +46,7 @@ public sealed class FeedEntitiesLoader<TFeed, TInternal> : IFeedEntitiesLoader<T
         {
             Console.WriteLine($"Entity with external key = {entity.ExternalKey}," +
                 $" internal key = {entity.InternalKey}," +
-                $" is_changedBy_import = {entity.IsChangedByImport}," +
-                $" is_mapped = {entity.IsMapped}," +
-                $" is_rejected = {entity.IsRejected}");
+                $" is_mapped = {entity.IsMapped}");
         }
     }
 

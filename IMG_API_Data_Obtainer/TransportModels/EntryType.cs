@@ -1,7 +1,7 @@
 ﻿namespace IMG_API_Data_Obtainer.TransportModels;
 
 /// <summary>
-/// Статус внесения теннисной команды в реестр.
+/// Статус вхождения теннисной команды в реестр.
 /// </summary>
 public enum EntryType
 {

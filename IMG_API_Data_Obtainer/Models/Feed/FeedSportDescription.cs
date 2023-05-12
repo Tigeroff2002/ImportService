@@ -1,5 +1,4 @@
-﻿using ADF.Library.Models.Mapping;
-using IMG_API_Data_Obtainer.EntitiesModels;
+﻿using IMG_API_Data_Obtainer.EntitiesModels;
 using IMG_API_Data_Obtainer.Models.Internal;
 
 namespace IMG_API_Data_Obtainer.Models.Feed;

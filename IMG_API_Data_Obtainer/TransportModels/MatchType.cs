@@ -6,7 +6,7 @@
 public enum MatchType
 {
     MaleSolo,
-    QualifierManSolo,
+    QualifierMaleSolo,
     FemaleSolo,
     QualifierFemaleSolo,
     MaleDuo,

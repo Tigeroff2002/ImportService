@@ -13,7 +13,6 @@
 
   <ItemGroup>
     <PackageReference Include="ADF.Library.Common" Version="0.4.0" />
-    <PackageReference Include="ADF.Library.Models.Mapping" Version="1.5.1" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.1" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />

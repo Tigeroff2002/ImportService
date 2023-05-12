@@ -15,12 +15,19 @@ namespace IMG_API_Data_Obtainer.EntitiesModels;
 /// <param name="SportId">
 /// Идентификатор спорта.
 /// </param>
+/// <param name="CountryId">
+/// Идентификатор страны.
+/// </param>
 /// <param name="CompetitionId">
 /// Идентификатор соревнования.
+/// </param>
+/// <param name="Year">
+/// Год проведения.
 /// </param>
 public sealed record class Championship(
     Id<Championship> Id,
     Name<Championship> FullName,
     Id<Sport> SportId,
     Id<Country> CountryId,
-    Id<Competition> CompetitionId);
+    Id<Competition> CompetitionId,
+    int Year);

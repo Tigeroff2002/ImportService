@@ -1,4 +1,4 @@
-﻿using ADF.Library.Models.Mapping;
+﻿using IMG_API_Data_Obtainer.Models;
 
 namespace IMG_API_Data_Obtainer.Logic.Abstractions;
 
@@ -24,6 +24,7 @@ public interface IFeedEntitiesRepository
     /// </returns>
     Task<IReadOnlyDictionary<ExternalID<TInternal>, TFeed>>
         GetAllAsync<TFeed, TInternal>(CancellationToken cancellationToken)
-        where TFeed : MappableEntity<TInternal>;
+        where TFeed : MappableEntity<TInternal>
+        where TInternal : IInternalEntityMarker;
 }
 

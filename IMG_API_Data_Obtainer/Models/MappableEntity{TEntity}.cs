@@ -1,6 +1,4 @@
-﻿using ADF.Library.Models.Mapping;
-
-namespace IMG_API_Data_Obtainer.Models;
+﻿namespace IMG_API_Data_Obtainer.Models;
 
 /// <summary>
 /// Определяет класс для сопоставляемой сущности.

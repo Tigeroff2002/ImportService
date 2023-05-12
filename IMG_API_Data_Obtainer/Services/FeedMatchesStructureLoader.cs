@@ -1,6 +1,7 @@
-﻿using ADF.Library.Models.Mapping.Feed.Description;
-using ADF.Library.Models.Mapping.Internal.Description;
-using IMG_API_Data_Obtainer.Logic.Abstractions;
+﻿using IMG_API_Data_Obtainer.Logic.Abstractions;
+using IMG_API_Data_Obtainer.Models.Feed;
+using IMG_API_Data_Obtainer.Models.Internal;
+
 using Microsoft.Extensions.Hosting;
 
 namespace IMG_API_Data_Obtainer.Services;
@@ -11,13 +12,13 @@ public sealed class FeedMatchesStructureLoader : BackgroundService
         IFeedEntitiesLoader<FeedSportDescription, IntSportDescription> feedSportsLoader,
         IFeedEntitiesLoader<FeedCategoryDescription, IntCategoryDescription> feedCategoriesLoader,
         IFeedEntitiesLoader<FeedChampionshipDescription, IntChampionshipDescription> feedChampionshipsLoader,
-        IFeedEntitiesLoader<FeedTeamDescription, IntTeamDescription> feedTeamsLoader,
+        IFeedEntitiesLoader<FeedPlayerDescription, IntPlayerDescription> feedPlayersLoader,
         IFeedEntitiesLoader<FeedEventDescription, IntEventDescription> feedEventsLoader)
     {
         _feedSportsLoader = feedSportsLoader ?? throw new ArgumentNullException(nameof(feedSportsLoader));
         _feedCategoriesLoader = feedCategoriesLoader ?? throw new ArgumentNullException(nameof(feedCategoriesLoader));
         _feedChampionshipsLoader = feedChampionshipsLoader ?? throw new ArgumentNullException(nameof(feedChampionshipsLoader));
-        _feedTeamsLoader = feedTeamsLoader ?? throw new ArgumentNullException(nameof(feedTeamsLoader));
+        _feedPlayersLoader = feedPlayersLoader ?? throw new ArgumentNullException(nameof(feedPlayersLoader));
         _feedEventsLoader = feedEventsLoader ?? throw new ArgumentNullException(nameof(feedEventsLoader));
     }
 
@@ -36,7 +37,7 @@ public sealed class FeedMatchesStructureLoader : BackgroundService
                 await _feedChampionshipsLoader.LoadAsync(stoppingToken)
                     .ConfigureAwait(false);
 
-                await _feedTeamsLoader.LoadAsync(stoppingToken)
+                await _feedPlayersLoader.LoadAsync(stoppingToken)
                     .ConfigureAwait(false);
 
                 await _feedEventsLoader.LoadAsync(stoppingToken)
@@ -47,6 +48,6 @@ public sealed class FeedMatchesStructureLoader : BackgroundService
     private readonly IFeedEntitiesLoader<FeedSportDescription, IntSportDescription> _feedSportsLoader;
     private readonly IFeedEntitiesLoader<FeedCategoryDescription, IntCategoryDescription> _feedCategoriesLoader;
     private readonly IFeedEntitiesLoader<FeedChampionshipDescription, IntChampionshipDescription> _feedChampionshipsLoader;
-    private readonly IFeedEntitiesLoader<FeedTeamDescription, IntTeamDescription> _feedTeamsLoader;
+    private readonly IFeedEntitiesLoader<FeedPlayerDescription, IntPlayerDescription> _feedPlayersLoader;
     private readonly IFeedEntitiesLoader<FeedEventDescription, IntEventDescription> _feedEventsLoader;
 }

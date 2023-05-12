@@ -33,5 +33,5 @@ public readonly record struct ExternalID<TEntity>
         Value = value;
     }
 
-    private const int IMG_PROVIDER_ID = 4;
+    private const int IMG_PROVIDER_ID = 4; // IMG Provider
 }

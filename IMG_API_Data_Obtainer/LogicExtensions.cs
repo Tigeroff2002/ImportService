@@ -1,13 +1,12 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-using ADF.Library.Models.Mapping;
-
 using IMG_API_Data_Obtainer.Logic.Abstractions;
 using IMG_API_Data_Obtainer.Logic;
 using IMG_API_Data_Obtainer.Services;
 
-using ADF.Library.Models.Mapping.Feed.Description;
-using ADF.Library.Models.Mapping.Internal.Description;
+using IMG_API_Data_Obtainer.Models;
+using IMG_API_Data_Obtainer.Models.Feed;
+using IMG_API_Data_Obtainer.Models.Internal;
 
 public static class LogicExtensions
 {
@@ -18,7 +17,7 @@ public static class LogicExtensions
             .AddDependenciesForFeed<FeedSportDescription, IntSportDescription>()
             .AddDependenciesForFeed<FeedCategoryDescription, IntCategoryDescription>()
             .AddDependenciesForFeed<FeedChampionshipDescription, IntChampionshipDescription>()
-            .AddDependenciesForFeed<FeedTeamDescription, IntTeamDescription>()
+            .AddDependenciesForFeed<FeedPlayerDescription, IntPlayerDescription>()
             .AddDependenciesForFeed<FeedEventDescription, IntEventDescription>();
 
     public static IServiceCollection AddMyHostedService(this IServiceCollection services)
@@ -27,5 +26,8 @@ public static class LogicExtensions
 
     private static IServiceCollection AddDependenciesForFeed<TFeed, TInternal>(this IServiceCollection services)
         where TFeed : MappableEntity<TInternal>
-            => services.AddSingleton<IFeedEntitiesLoader<TFeed, TInternal>, FeedEntitiesLoader<TFeed, TInternal>>();
+        where TInternal : IInternalEntityMarker
+            => services.AddSingleton<
+                IFeedEntitiesLoader<TFeed, TInternal>,
+                FeedEntitiesLoader<TFeed, TInternal>>();
 }
