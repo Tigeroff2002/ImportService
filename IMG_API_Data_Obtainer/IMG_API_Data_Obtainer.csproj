@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <Folder Include="DataSamples\" />
+    <Folder Include="Models\" />
   </ItemGroup>
 
   <ItemGroup>

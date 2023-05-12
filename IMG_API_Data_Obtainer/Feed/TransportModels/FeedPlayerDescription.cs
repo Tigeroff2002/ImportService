@@ -14,10 +14,10 @@ public sealed class FeedPlayerDescription : FeedDescriptionBase
     public ExternalID SportExternalKey { get; init; } = default!;
 
     /// <summary>
-    /// Внешний идентификатор команды.
+    /// Внешний идентификатор категории.
     /// </summary>
-    [JsonProperty("team_external_key", NullValueHandling = NullValueHandling.Ignore)]
-    public ExternalID? TeamExternalKey { get; init; } = default!;
+    [JsonProperty("category_external_key", Required = Required.Default)]
+    public ExternalID CategoryExternalKey { get; init; } = default!;
 
     /// <summary>
     /// Название игрока.
