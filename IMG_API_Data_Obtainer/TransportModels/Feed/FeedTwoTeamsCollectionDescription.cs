@@ -3,7 +3,7 @@
 namespace IMG_API_Data_Obtainer.TransportModels.Feed;
 
 /// <summary>
-/// Описание теннисной команды.
+/// Общее описание теннисной команды.
 /// </summary>
 public abstract class FeedTwoTeamsCollectionDescription 
 {

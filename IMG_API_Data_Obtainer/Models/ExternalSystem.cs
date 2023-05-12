@@ -1,4 +1,4 @@
-﻿namespace IMG_API_Data_Obtainer.TransportModels;
+﻿namespace IMG_API_Data_Obtainer.Models;
 
 /// <summary>
 /// Внешние провайдеры.
@@ -10,4 +10,3 @@ public enum ExternalSystem
     TxOdds,
     IMG = 4
 }
-

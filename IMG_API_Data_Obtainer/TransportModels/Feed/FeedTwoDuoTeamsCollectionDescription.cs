@@ -11,8 +11,8 @@ namespace IMG_API_Data_Obtainer.TransportModels.Feed
         /// <summary>
         /// Тип команды в зависимости от пола участников.
         /// </summary>
-        [JsonProperty("gender_type", Required = Required.Always)]
-        public GenderTeamType TeamsType { get; init; }
+        [JsonProperty("gender_mix_type", Required = Required.Always)]
+        public GenderMixType GenderMixType { get; init; }
 
         /// <summary>
         /// Дуо-игроки команды A.

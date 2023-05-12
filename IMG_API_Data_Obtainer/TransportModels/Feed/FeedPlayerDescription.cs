@@ -24,4 +24,10 @@ public sealed class FeedPlayerDescription : FeedDescriptionBase
     /// </summary>
     [JsonProperty("name", Required = Required.Always)]
     public string Name { get; init; } = default!;
+
+    /// <summary>
+    /// Пол игрока.
+    /// </summary>
+    [JsonProperty("gender", Required = Required.Always)]
+    public PlayerGender Gender { get; init; }
 }

@@ -1,4 +1,4 @@
-﻿namespace IMG_API_Data_Obtainer.TransportModels.Feed;
+﻿namespace IMG_API_Data_Obtainer.TransportModels;
 
 /// <summary>
 /// Полный тип теннисного матча.

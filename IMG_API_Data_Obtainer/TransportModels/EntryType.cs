@@ -1,9 +1,9 @@
-﻿namespace IMG_API_Data_Obtainer.TransportModels.Feed;
+﻿namespace IMG_API_Data_Obtainer.TransportModels;
 
 /// <summary>
 /// Статус внесения теннисной команды в реестр.
 /// </summary>
-public enum EntryType 
+public enum EntryType
 {
     Standart,
     Wildcard,
