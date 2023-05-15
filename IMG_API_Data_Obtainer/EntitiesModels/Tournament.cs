@@ -13,6 +13,5 @@ public sealed record class Tournament(
     Id<Championship> ChampionsipId,
     Id<Country> CountryId,
     Id<Sport> SportId,
-    List<Id<Competition>> CompetitionIds,
     Name<Championship> TournamentName,
     int Year);

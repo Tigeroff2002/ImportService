@@ -10,5 +10,4 @@
 /// Название страны.
 /// </param>
 public sealed record class Country(
-    Id<Country> Id,
     Name<Country> Name);

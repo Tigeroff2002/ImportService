@@ -87,7 +87,7 @@ public sealed class EntitiesStructureDeserializer : IEntitiesStructureDeserializ
 
     private readonly IDeserializer<string, IReadOnlyDictionary<Id<Sport>, Sport>> _sportsDeserializer;
     private readonly IDeserializer<string, IReadOnlyDictionary<Id<Championship>, Championship>> _championshipsDeserializer;
-    private readonly IDeserializer<string, IReadOnlyDictionary<Id<Competitor>, Competitor>> _competitorsDeserializer;
+    private readonly IDeserializer<string, IReadOnlyDictionary<Id<Team>, Team>> _teamsDeserializer;
     private readonly IDeserializer<string, IReadOnlyDictionary<Id<Match>, Match>> _matchesDeserializer;
     private readonly IDeserializer<string, IReadOnlyCollection<Id<Match>>> _deletedMatchesDeserializer;
     private readonly IDeserializer<string, IReadOnlyDictionary<Id<Competition>, Competition>> _competitionsDeserializer;

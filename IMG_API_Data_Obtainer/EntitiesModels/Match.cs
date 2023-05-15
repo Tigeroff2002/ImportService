@@ -10,7 +10,7 @@ public sealed class Match : IEquatable<Match>
     /// <summary>
     /// Идентификатор матча.
     /// </summary>
-    public Id<Match> Id { get; }
+    public Name<Match> Id { get; }
 
     /// <summary>
     /// Время начала матча.
@@ -18,19 +18,19 @@ public sealed class Match : IEquatable<Match>
     public DateTimeOffset ScheduledStart { get; }
 
     /// <summary>
-    /// Идентификатор чемпионата.
+    /// Идентификатор соревнования.
     /// </summary>
-    public Id<Championship> ChampionshipId { get; }
+    public Name<Competition> CompetitionId { get; }
 
     /// <summary>
-    /// Идентификатор команды A.
+    /// Полное название команды A.
     /// </summary>
-    public Id<Team> TeamA { get; }
+    public Name<Team> TeamA { get; }
 
     /// <summary>
-    /// Идентификатор команды B.
+    /// Полное название команды B.
     /// </summary>
-    public Id<Team> TeamB { get; }
+    public Name<Team> TeamB { get; }
 
     /// <summary>
     /// Флаг, обозначающий отменен ли матч.
@@ -53,17 +53,17 @@ public sealed class Match : IEquatable<Match>
     /// <param name="isCancelled"></param>
     /// <param name="matchType"></param>
     public Match(
-        Id<Match> id,
+        Name<Match> id,
         DateTimeOffset scheduledStart,
-        Id<Championship> championshipId,
-        Id<Team> teamA,
-        Id<Team> teamB,
+        Name<Competition> competitionId,
+        Name<Team> teamA,
+        Name<Team> teamB,
         bool isCancelled,
         TeamType matchType)
     {
         Id = id;
         ScheduledStart = scheduledStart;
-        ChampionshipId = championshipId;
+        CompetitionId = competitionId;
         TeamA = teamA;
         TeamB = teamB;
         IsCancelled = isCancelled;

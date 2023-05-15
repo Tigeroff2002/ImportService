@@ -3,9 +3,6 @@ using IMG_API_Data_Obtainer.Logic.Abstractions;
 using IMG_API_Data_Obtainer.Models;
 using IMG_API_Data_Obtainer.Models.Feed;
 using IMG_API_Data_Obtainer.Models.Internal;
-using IMG_API_Data_Obtainer.TransportModels;
-using System.IO;
-using MatchType = IMG_API_Data_Obtainer.TransportModels.MatchType;
 
 namespace IMG_API_Data_Obtainer.Logic;
 
