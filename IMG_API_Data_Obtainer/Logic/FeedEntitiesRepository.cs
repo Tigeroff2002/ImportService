@@ -114,7 +114,7 @@ public sealed class FeedEntitiesRepository : IFeedEntitiesRepository
             .ToDictionary(v => v.ExternalKey);
     }
 
-    private async Task<IReadOnlyDictionary<ExternalID<IntPlayerDescription>, FeedPlayerDescription>> GetPlayersAsync(CancellationToken cancellationToken)
+    private async Task<IReadOnlyDictionary<ExternalID<IntTeamDescription>, FeedTeamDescription>> GetTeamsAsync(CancellationToken cancellationToken)
     {
         var players = await Task.WhenAll(
             _supportedSportIds.Select(
@@ -124,9 +124,9 @@ public sealed class FeedEntitiesRepository : IFeedEntitiesRepository
 
         return players.SelectMany(v => v.Values)
             .ToDictionary(
-                player => new ExternalID<IntPlayerDescription>(
+                player => new ExternalID<IntTeamDescription>(
                             $"{player.Id.Value}"),
-                player => new FeedPlayerDescription(
+                player => new FeedTeamDescription(
                             new($"{player.Id.Value}"),
                             new($"{player.SportId.Value}"),
                             new($"{player.CountryId.Value}"),

@@ -5,29 +5,17 @@ namespace IMG_API_Data_Obtainer.TransportModels.Feed;
 /// <summary>
 /// Общее описание теннисной команды.
 /// </summary>
-public abstract class FeedTwoTeamsCollectionDescription 
+public sealed class FeedTwoTeamsCollectionDescription 
 {
     /// <summary>
-    /// Статус внесения в реестр матча команды А.
+    /// Идентификатор команды А.
     /// </summary>
-    [JsonProperty("teamA_entry_type", Required = Required.Default)]
-    public EntryType TeamAEntryType { get; init; }
+    [JsonProperty("teamA", Required = Required.Always)]
+    public ExternalID TeamA { get; init; } = default!;
 
     /// <summary>
-    /// Статус внесения в реестр матча команды B.
+    /// Идентификатор команды B.
     /// </summary>
-    [JsonProperty("teamB_entry_type", Required = Required.Default)]
-    public EntryType TeamBEntryType { get; init; }
-
-    /// <summary>
-    /// Статус известности команды А в реестре.
-    /// </summary>
-    [JsonProperty("teamA_known_status", Required = Required.Always)]
-    public KnownTeamStatus TeamAKnownStatus { get; init; }
-
-    /// <summary>
-    /// Статус известности команды B в реестре.
-    /// </summary>
-    [JsonProperty("teamB_known_status", Required = Required.Always)]
-    public KnownTeamStatus TeamBKnownStatus { get; init; }
+    [JsonProperty("teamB", Required = Required.Always)]
+    public ExternalID TeamB { get; init; } = default!;
 }

@@ -1,6 +1,5 @@
 ﻿using IMG_API_Data_Obtainer.Models.Internal;
-
-using MatchType = IMG_API_Data_Obtainer.TransportModels.MatchType;
+using IMG_API_Data_Obtainer.TransportModels;
 
 namespace IMG_API_Data_Obtainer.Models.Feed;
 
@@ -15,9 +14,14 @@ public sealed class FeedEventDescription : MappableEntity<IntEventDescription>
     public ExternalID<IntChampionshipDescription> ChampionshipExternalKey { get; }
 
     /// <summary>
-    /// Тип матча.
+    /// Тип команды, участвующей в матче.
     /// </summary>
-    public MatchType MatchType { get; }
+    public TeamType TeamType { get; }
+
+    /// <summary>
+    /// Тип проведения матча.
+    /// </summary>
+    public MatchEntryType MatchEntryType { get; }
  
     /// <summary>
     /// Запланированное время старта матча.
@@ -64,7 +68,8 @@ public sealed class FeedEventDescription : MappableEntity<IntEventDescription>
     /// </exception>
     public FeedEventDescription(
         ExternalID<IntEventDescription> externalKey,
-        MatchType matchType,
+        TeamType teamType,
+        MatchEntryType matchEntryType,
         ExternalID<IntChampionshipDescription> championshipExternalKey,
         DateTimeOffset scheduledStart,
         FeedTwoTeamsCollectionDescription teamParticipants,
@@ -86,7 +91,8 @@ public sealed class FeedEventDescription : MappableEntity<IntEventDescription>
 
         IsCancelled = isCancelled;
         ChampionshipExternalKey = championshipExternalKey;
-        MatchType = matchType;
+        TeamType = teamType;
+        MatchEntryType = matchEntryType;
         ScheduledStart = scheduledStart;
         TeamParticipants = feedTwoTeams;
     }

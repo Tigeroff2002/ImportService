@@ -1,33 +1,18 @@
-﻿using System.Diagnostics.Metrics;
-
-namespace IMG_API_Data_Obtainer.EntitiesModels;
+﻿namespace IMG_API_Data_Obtainer.EntitiesModels;
 
 /// <summary>
-/// Представляет модель чемпионата.
+/// Создает экземпляр <see cref="Tournament"/>.
 /// </summary>
-/// <param name="Id">
-/// Идентификатор чемпионата.
-/// </param>
-/// <param name="FullName">
-/// Полное название чемпионата
-/// включающее название лиги или события и информацию о сезоне или годе.
-/// </param>
-/// <param name="SportId">
-/// Идентификатор спорта.
-/// </param>
-/// <param name="CountryId">
-/// Идентификатор страны.
-/// </param>
-/// <param name="CompetitionId">
-/// Идентификатор соревнования.
-/// </param>
-/// <param name="Year">
-/// Год проведения.
-/// </param>
-public sealed record class Championship(
-    Id<Championship> Id,
-    Name<Championship> FullName,
-    Id<Sport> SportId,
+/// <param name="ChampionsipId"></param>
+/// <param name="CountryId"></param>
+/// <param name="SportId"></param>
+/// <param name="CompetitionIds"></param>
+/// <param name="TournamentName"></param>
+/// <param name="Year"></param>
+public sealed record class Tournament(
+    Id<Championship> ChampionsipId,
     Id<Country> CountryId,
-    Id<Competition> CompetitionId,
+    Id<Sport> SportId,
+    List<Id<Competition>> CompetitionIds,
+    Name<Championship> TournamentName,
     int Year);
