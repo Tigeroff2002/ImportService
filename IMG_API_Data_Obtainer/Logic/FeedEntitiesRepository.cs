@@ -1,8 +1,12 @@
-﻿using ADF.Library.Models.Mapping;
-using ADF.Library.Models.Mapping.Feed.Description;
-using ADF.Library.Models.Mapping.Internal.Description;
-using IMG_API_Data_Obtainer.EntitiesModels;
+﻿using IMG_API_Data_Obtainer.EntitiesModels;
 using IMG_API_Data_Obtainer.Logic.Abstractions;
+using IMG_API_Data_Obtainer.Models;
+using IMG_API_Data_Obtainer.Models.Feed;
+using IMG_API_Data_Obtainer.Models.Internal;
+
+using MatchType = IMG_API_Data_Obtainer.TransportModels.RawMatchType;
+using TeamType = IMG_API_Data_Obtainer.TransportModels.TeamType;
+using EntryType = IMG_API_Data_Obtainer.TransportModels.MatchEntryType;
 
 namespace IMG_API_Data_Obtainer.Logic;
 
@@ -20,7 +24,7 @@ public sealed class FeedEntitiesRepository : IFeedEntitiesRepository
     /// <exception cref="ArgumentNullException">
     /// Если <paramref name="entitiesStructureDeserializer"/> является <see langword="null"/>.
     /// </exception>
-    public FeedEntitiesRepository(IEntitiesStructureDeserializer entitiesStructureDeserializer)
+    public FeedEntitiesRepository(IEntitiesStructureFetcher entitiesStructureDeserializer)
     {
         _entitiesStructureDeserializer = entitiesStructureDeserializer ??
             throw new ArgumentNullException(nameof(entitiesStructureDeserializer));
@@ -29,25 +33,26 @@ public sealed class FeedEntitiesRepository : IFeedEntitiesRepository
     /// <inheritdoc/>
     public async Task<IReadOnlyDictionary<ExternalID<TInternal>, TFeed>> GetAllAsync<TFeed, TInternal>(CancellationToken cancellationToken)
         where TFeed : MappableEntity<TInternal>
+        where TInternal : IInternalEntityMarker
     {
         cancellationToken.ThrowIfCancellationRequested();
 
         return typeof(TFeed) switch
         {
             _ when typeof(FeedSportDescription) == typeof(TFeed)
-                => (IReadOnlyDictionary<ExternalID<TInternal>, TFeed>)await GetSportsAsync(cancellationToken),
+                => (IReadOnlyDictionary<ExternalID<TInternal>, TFeed>) await GetSportsAsync(cancellationToken),
 
             _ when typeof(FeedCategoryDescription) == typeof(TFeed)
-                => (IReadOnlyDictionary<ExternalID<TInternal>, TFeed>)await GetCategoriesAsync(cancellationToken),
+                => (IReadOnlyDictionary<ExternalID<TInternal>, TFeed>) await GetCategoriesAsync(cancellationToken),
 
             _ when typeof(FeedChampionshipDescription) == typeof(TFeed)
-                => (IReadOnlyDictionary<ExternalID<TInternal>, TFeed>)await GetChampionshipsAsync(cancellationToken),
+                => (IReadOnlyDictionary<ExternalID<TInternal>, TFeed>) await GetChampionshipsAsync(cancellationToken),
 
             _ when typeof(FeedTeamDescription) == typeof(TFeed)
-                => (IReadOnlyDictionary<ExternalID<TInternal>, TFeed>)await GetTeamsAsync(cancellationToken),
+                => (IReadOnlyDictionary<ExternalID<TInternal>, TFeed>) await GetTeamsAsync(cancellationToken),
 
             _ when typeof(FeedEventDescription) == typeof(TFeed)
-                => (IReadOnlyDictionary<ExternalID<TInternal>, TFeed>)await GetMatchesAsync(cancellationToken),
+                => (IReadOnlyDictionary<ExternalID<TInternal>, TFeed>) await GetMatchesAsync(cancellationToken),
 
             _ => throw new InvalidOperationException($"An unknown feed entity type is received {typeof(TFeed).Name}."),
         };
@@ -55,147 +60,129 @@ public sealed class FeedEntitiesRepository : IFeedEntitiesRepository
 
     private async Task<IReadOnlyDictionary<ExternalID<IntSportDescription>, FeedSportDescription>> GetSportsAsync(CancellationToken cancellationToken)
     {
-        var sports = await _entitiesStructureDeserializer.FetchSportsAsync(cancellationToken)
-            .ConfigureAwait(false);
+        var sports = 
+            await _entitiesStructureDeserializer.FetchSportsAsync(cancellationToken)
+                .ConfigureAwait(false);
 
         return sports.ToDictionary(
             sport => new ExternalID<IntSportDescription>(
-                        $"{sport.Key.Value}",
-                        ExternalSystem.TxOdds),
+                        $"{sport.Key.Value}"),
             sport => new FeedSportDescription(
-                        new($"{sport.Key.Value}",
-                            ExternalSystem.TxOdds),
-                        sport.Value.Name.Value)
-            {
-                IsChangedByImport = true
-            });
+                        new($"{sport.Key.Value}"),
+                        new($"{sport.Value.Name}")));
     }
 
     private async Task<IReadOnlyDictionary<ExternalID<IntCategoryDescription>, FeedCategoryDescription>> GetCategoriesAsync(CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
 
-        var tennisCategories = await LoadTennisCategoriesAsync();
+        var tennisCategories = 
+            await _entitiesStructureDeserializer.FetchCountriesAsync(cancellationToken)
+                .ConfigureAwait(false);
 
-        return tennisCategories.ToDictionary(v => v.ExternalKey);
-
-        async Task<IEnumerable<FeedCategoryDescription>> LoadTennisCategoriesAsync()
-        {
-            var tennisCompetitions =
-                await _entitiesStructureDeserializer.FetchCompetitionsAsync(
-                    _tennisId,
-                    cancellationToken);
-
-            return tennisCompetitions.Values.Select(
-                    competition
-                        => new FeedCategoryDescription(
-                            new($"{competition.Id.Value}", ExternalSystem.TxOdds),
-                            competition.Name.Value)
-                        {
-                            IsChangedByImport = true
-                        });
-        }
+        return tennisCategories.ToDictionary(
+            category => new ExternalID<IntCategoryDescription>(
+                $"{category.Id}"),
+            category
+                => new FeedCategoryDescription(
+                    new($"{category.Id.Value}"),
+                    new($"{SPORT_TENNIS_ID}")));
     }
 
     private async Task<IReadOnlyDictionary<ExternalID<IntChampionshipDescription>, FeedChampionshipDescription>> GetChampionshipsAsync(CancellationToken cancellationToken)
     {
-        var championships = await Task.WhenAll(
-            _supportedSportIds.Select(
-                spid => _entitiesStructureDeserializer.FetchChampionshipsAsync(
-                    spid,
-                    cancellationToken)));
+        cancellationToken.ThrowIfCancellationRequested();
 
-        return championships.SelectMany(v => v.Values).Select(
+        var championships = 
+            await _entitiesStructureDeserializer.FetchTournamentsAsync(cancellationToken)
+                .ConfigureAwait(false);
+
+        return championships.ToDictionary(
+            championship => new ExternalID<IntChampionshipDescription>(
+                $"{championship.Id}"),
             championship =>
                 new FeedChampionshipDescription(
-                    new($"{championship.Id.Value}", ExternalSystem.TxOdds),
-                    new($"{championship.SportId.Value}", ExternalSystem.TxOdds),
-                    championship.SportId == _tennisId
-                        ? new ExternalID<IntCategoryDescription>($"{championship.CompetitionId.Value}", ExternalSystem.TxOdds)
-                        : new($"{championship.CountryId.Value}", ExternalSystem.TxOdds),
-                    championship.FullName.Value,
-                    false)
-                {
-                    IsChangedByImport = true,
-                })
-            .ToDictionary(v => v.ExternalKey);
+                    new($"{championship.Id.Value}"),
+                    new($"{championship.SportId.Value}"),
+                    new($"{championship.CountryId.Value}"),
+                    new($"{championship.TournamentName.Value}"),
+                    championship.Year,
+                    championship.MatchType));
     }
 
     private async Task<IReadOnlyDictionary<ExternalID<IntTeamDescription>, FeedTeamDescription>> GetTeamsAsync(CancellationToken cancellationToken)
     {
-        var teams = await Task.WhenAll(
-            _supportedSportIds.Select(
-                spid => _entitiesStructureDeserializer.FetchCompetitorsAsync(
-                    spid,
-                    cancellationToken)));
+        var teams = await _entitiesStructureDeserializer.FetchTeamsAsync(cancellationToken)
+            .ConfigureAwait(false);
 
-        return teams.SelectMany(v => v.Values)
-            .ToDictionary(
+        return teams.ToDictionary(
                 team => new ExternalID<IntTeamDescription>(
-                            $"{team.Id.Value}",
-                            ExternalSystem.TxOdds),
+                            $"{team.Id.Value}"),
                 team => new FeedTeamDescription(
-                            new($"{team.Id.Value}",
-                                ExternalSystem.TxOdds),
-                            new($"{team.SportId.Value}",
-                                ExternalSystem.TxOdds),
-                            $"{team.Name.Value} ({"some_team_name"})")
-                {
-                    IsChangedByImport = true
-                });
+                            new($"{team.Id.Value}"),
+                            new($"{team.SportId.Value}"),
+                            new($"{team.FullName.Value}"),
+                            team.TeamType));
     }
 
     private async Task<IReadOnlyDictionary<ExternalID<IntEventDescription>, FeedEventDescription>> GetMatchesAsync(CancellationToken cancellationToken)
     {
-        var matches = await Task.WhenAll(
-            _supportedSportIds.Select(
-                spid => _entitiesStructureDeserializer.FetchMatchesAsync(
-                    spid,
-                    cancellationToken)));
+        var matches = await _entitiesStructureDeserializer.FetchMatchesAsync(cancellationToken)
+            .ConfigureAwait(false);
 
         var deletedMatches = await _entitiesStructureDeserializer.FetchDeletedMatchesAsync(cancellationToken)
             .ConfigureAwait(false);
 
-        return matches.SelectMany(v => v.Values)
-            .Aggregate(
+        var tournaments = await _entitiesStructureDeserializer.FetchTournamentsAsync(cancellationToken)
+            .ConfigureAwait(false);
+
+        return matches.Aggregate(
             new Dictionary<ExternalID<IntEventDescription>, FeedEventDescription>(),
             (matches, match) =>
             {
                 var externalId = new ExternalID<IntEventDescription>(
-                    $"{match.Id.Value}",
-                    ExternalSystem.TxOdds);
+                    $"{match.Id.Value}");
 
                 var mustBeMarkedAsCancelled =
                     deletedMatches.Contains(match.Id)
                     || match.IsCancelled;
 
-                var feedEvent = new FeedEventDescription(
-                    externalId,
-                    new($"{match.ChampionshipId.Value}",
-                        ExternalSystem.TxOdds),
-                    match.ScheduledStart,
-                    new FeedTwoTeamsCollectionDescription(
-                        new($"{match.HomeId.Value}",
-                            ExternalSystem.TxOdds),
-                        new($"{match.AwayId.Value}",
-                            ExternalSystem.TxOdds)),
-                    mustBeMarkedAsCancelled)
+                var tournament = tournaments.FirstOrDefault(x => x.CompetitionIds.Contains(match.CompetitionId.Value));
+
+                if (tournament != null)
                 {
-                    IsChangedByImport = true
-                };
+                    var feedEvent = new FeedEventDescription(
+                        externalId,
+                        match.MatchType == MatchType.MS || match.MatchType == MatchType.LS
+                            || match.MatchType == MatchType.QMS || match.MatchType == MatchType.QLS
+                                ? TeamType.Solo
+                                : match.MatchType == MatchType.MD || match.MatchType == MatchType.LD
+                                    || match.MatchType == MatchType.QMD || match.MatchType == MatchType.QLD
+                                        ? TeamType.DuoSimilar
+                                        : TeamType.DuoMixed,
+                        match.MatchType == MatchType.MS || match.MatchType == MatchType.LS
+                            || match.MatchType == MatchType.MD || match.MatchType == MatchType.LD
+                                || match.MatchType == MatchType.XD
+                                    ? EntryType.Standart
+                                    : EntryType.Qualifier,
+                        new ExternalID<IntChampionshipDescription>(
+                            $"{tournament.Id}"),
+                        match.ScheduledStart,
+                        new(
+                            new ExternalID<IntTeamDescription>(
+                                $"{match.TeamA.Value}"),
+                            new ExternalID<IntTeamDescription>("" +
+                            $"{match.TeamB.Value}")),
+                        mustBeMarkedAsCancelled);
 
-                matches.Add(feedEvent.ExternalKey, feedEvent);
+                    matches.Add(feedEvent.ExternalKey, feedEvent);
+                }
 
-                return matches;
-            });
+             return matches;
+        });
     }
 
-    private readonly IEntitiesStructureDeserializer _entitiesStructureDeserializer;
+    private readonly IEntitiesStructureFetcher _entitiesStructureDeserializer;
 
-    private static readonly Id<Sport> _tennisId = new(5);
-
-    private readonly IReadOnlySet<Id<Sport>> _supportedSportIds = new HashSet<Id<Sport>>
-    {
-        _tennisId,
-    };
+    private const long SPORT_TENNIS_ID = 5L;
 }

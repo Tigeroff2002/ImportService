@@ -4,9 +4,7 @@
 /// Представляет модель страны.
 /// </summary>
 /// <param name="Id">
-/// Идентификатор страны.
+/// Идентификатор (название) страны.
 /// </param>
-/// <param name="Name">
-/// Название страны.
-/// </param>
-public sealed record class Country(Id<Country> Id, Name<Country> Name);
+public sealed record class Country(
+    Name<Country> Id);

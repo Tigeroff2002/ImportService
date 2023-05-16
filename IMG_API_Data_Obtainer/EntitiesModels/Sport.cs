@@ -9,4 +9,6 @@
 /// <param name="Name">
 /// Название спорта.
 /// </param>
-public sealed record class Sport(Id<Sport> Id, Name<Sport> Name);
+public sealed record class Sport(
+    Id<Sport> Id,
+    Name<Sport> Name);

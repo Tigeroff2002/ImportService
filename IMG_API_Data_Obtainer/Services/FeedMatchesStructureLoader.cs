@@ -1,6 +1,7 @@
-﻿using ADF.Library.Models.Mapping.Feed.Description;
-using ADF.Library.Models.Mapping.Internal.Description;
-using IMG_API_Data_Obtainer.Logic.Abstractions;
+﻿using IMG_API_Data_Obtainer.Logic.Abstractions;
+using IMG_API_Data_Obtainer.Models.Feed;
+using IMG_API_Data_Obtainer.Models.Internal;
+
 using Microsoft.Extensions.Hosting;
 
 namespace IMG_API_Data_Obtainer.Services;

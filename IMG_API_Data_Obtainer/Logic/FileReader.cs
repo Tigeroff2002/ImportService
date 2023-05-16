@@ -1,4 +1,5 @@
-﻿using IMG_API_Data_Obtainer.Logic.Abstractions;
+﻿using IMG_API_Data_Obtainer.EntitiesModels;
+using IMG_API_Data_Obtainer.Logic.Abstractions;
 using System.Text;
 
 namespace IMG_API_Data_Obtainer.Logic;
@@ -22,12 +23,12 @@ public static class FileReader
 
     private static Dictionary<string, string> _pathsToData = new Dictionary<string, string>()
     {
-        { "matches", "DataSamples/fixtures.json" },
-        { "sports", "nothing.json" },
-        { "players", "DataSamples/players.json" },
-        { "competitions", "DataSamples/competitions.json" },
-        { "tournaments", "DataSamples/tournaments.json" },
-        { "teams", "DataSamples/teams.json" },
+        { nameof(Sport), "DataSamples/tournaments.json" },
+        { nameof(Country), "DataSamples/tournaments.json" },
+        { nameof(Tournament), "DataSamples/tournaments.json" },
+        { nameof(Competition), "DataSamples/tournaments.json" },
+        { nameof(Team), "DataSamples/fixtures.json" },
+        { nameof(Match), "DataSamples/fixtures.json" },
     };
 
     private static readonly string _emptyResult = new StringBuilder().ToString();

@@ -1,23 +1,24 @@
-﻿using ADF.Library.Models.Mapping;
+﻿using IMG_API_Data_Obtainer.Models;
 
 namespace IMG_API_Data_Obtainer.Logic.Abstractions;
 
-/// <summary xml:lang="ru">
+/// <summary>
 /// Контракт загрузчика внешних сущностей.
 /// </summary>
-/// <typeparam xml:lang="ru" name="TFeed">
+/// <typeparam name="TFeed">
 /// Тип внешней сущности.
 /// </typeparam>
-/// <typeparam xml:lang="ru" name="TInternal">
+/// <typeparam name="TInternal">
 /// Тип внутренней сущности.
 /// </typeparam>
 public interface IFeedEntitiesLoader<TFeed, TInternal>
     where TFeed : MappableEntity<TInternal>
+    where TInternal : IInternalEntityMarker
 {
-    /// <summary xml:lang="ru">
+    /// <summary>
     /// Загружает внешние сущности.
     /// </summary>
-    /// <param xml:lang="ru" name="cancellationToken">
+    /// <param name="cancellationToken">
     /// Токен отмены операции.
     /// </param>
     /// <returns>

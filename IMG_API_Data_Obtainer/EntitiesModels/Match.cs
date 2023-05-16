@@ -1,4 +1,6 @@
-﻿namespace IMG_API_Data_Obtainer.EntitiesModels;
+﻿using IMG_API_Data_Obtainer.TransportModels;
+
+namespace IMG_API_Data_Obtainer.EntitiesModels;
 
 /// <summary>
 /// Представляет модель матча.
@@ -8,7 +10,12 @@ public sealed class Match : IEquatable<Match>
     /// <summary>
     /// Идентификатор матча.
     /// </summary>
-    public Id<Match> Id { get; }
+    public Name<Match> Id { get; }
+
+    /// <summary>
+    /// Название матча.
+    /// </summary>
+    public Name<Match> Name { get; }
 
     /// <summary>
     /// Время начала матча.
@@ -16,19 +23,19 @@ public sealed class Match : IEquatable<Match>
     public DateTimeOffset ScheduledStart { get; }
 
     /// <summary>
-    /// Идентификатор чемпионата.
+    /// Идентификатор соревнования.
     /// </summary>
-    public Id<Championship> ChampionshipId { get; }
+    public Name<Competition> CompetitionId { get; }
 
     /// <summary>
-    /// Идентификатор команды "хозяев".
+    /// Идентификатор команды A.
     /// </summary>
-    public Id<Competitor> HomeId { get; }
+    public Name<Team> TeamA { get; }
 
     /// <summary>
-    /// Идентификатор команды "гостей".
+    /// Идентификатор команды B.
     /// </summary>
-    public Id<Competitor> AwayId { get; }
+    public Name<Team> TeamB { get; }
 
     /// <summary>
     /// Флаг, обозначающий отменен ли матч.
@@ -36,50 +43,49 @@ public sealed class Match : IEquatable<Match>
     public bool IsCancelled { get; }
 
     /// <summary>
-    /// Создаёт экземпляр типа <see cref="Match"/>.
+    /// Тип команды, принимающей участие в матче.
     /// </summary>
-    /// <param name="id">
-    /// Идентификатор матча.
-    /// </param>
-    /// <param name="scheduledStart">
-    /// Время начала матча.
-    /// </param>
-    /// <param name="championshipId">
-    /// Идентификатор чемпионата.
-    /// </param>
-    /// <param name="home">
-    /// Идентификатор команды "хозяев".
-    /// </param>
-    /// <param name="away">
-    /// Идентификатор команды "гостей".
-    /// </param>
-    /// <param name="isCancelled">
-    /// Флаг, обозначающий отменен ли матч.
-    /// </param>
-    /// <exception cref="InvalidOperationException">
-    /// Если <paramref name="home"/> равен <paramref name="away"/>.
-    /// </exception>
-    public Match(
-        Id<Match> id,
-        DateTimeOffset scheduledStart,
-        Id<Championship> championshipId,
-        Id<Competitor> home,
-        Id<Competitor> away,
-        bool isCancelled)
-    {
-        if (home == away)
-        {
-            throw new InvalidOperationException(
-                "Match cannot be created " +
-                "with equivalent team ids.");
-        }
+    public TeamType TeamType { get; }
 
+    /// <summary>
+    /// Тип матча.
+    /// </summary>
+    public RawMatchType MatchType { get; }
+
+    /// <summary>
+    /// Создает экземпляр <see cref="Match"/>.
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="matchName">
+    /// </param>
+    /// <param name="competitionId">
+    /// </param>
+    /// <param name="scheduledStart"></param>
+    /// <param name="teamA"></param>
+    /// <param name="teamB"></param>
+    /// <param name="isCancelled"></param>
+    /// <param name="matchType"></param>
+    /// <param name="teamType"></param>
+    public Match(
+        Name<Match> id,
+        Name<Match> matchName,
+        DateTimeOffset scheduledStart,
+        Name<Competition> competitionId,
+        Name<Team> teamA,
+        Name<Team> teamB,
+        bool isCancelled,
+        RawMatchType matchType,
+        TeamType teamType)
+    {
         Id = id;
+        Name = matchName;
         ScheduledStart = scheduledStart;
-        ChampionshipId = championshipId;
-        HomeId = home;
-        AwayId = away;
+        CompetitionId = competitionId;
+        TeamA = teamA;
+        TeamB = teamB;
         IsCancelled = isCancelled;
+        MatchType = matchType;
+        TeamType = teamType;
     }
 
     /// <inheritdoc/>
