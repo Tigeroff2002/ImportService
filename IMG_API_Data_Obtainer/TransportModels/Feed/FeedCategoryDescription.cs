@@ -12,10 +12,4 @@ public sealed class FeedCategoryDescription : FeedDescriptionBase
     /// </summary>
     [JsonProperty("sport_external_key", NullValueHandling = NullValueHandling.Ignore)]
     public ExternalID? SportExternalKey { get; init; } = default!;
-
-    /// <summary>
-    /// Название категории.
-    /// </summary>
-    [JsonProperty("name", Required = Required.Always)]
-    public string Name { get; init; } = default!;
 }

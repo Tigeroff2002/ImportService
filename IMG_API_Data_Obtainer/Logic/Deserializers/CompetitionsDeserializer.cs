@@ -8,9 +8,9 @@ using System.Diagnostics;
 namespace IMG_API_Data_Obtainer.Logic.Deserializers;
 
 public sealed class CompetitionsDeserializer
-    : IDeserializer<string, IReadOnlyDictionary<Name<Competition>, Competition>>
+    : IDeserializer<string, IReadOnlyList<Competition>>
 {
-    public IReadOnlyDictionary<Name<Competition>, Competition> Deserialize(string source)
+    public IReadOnlyList<Competition> Deserialize(string source)
     {
         if (string.IsNullOrWhiteSpace(source))
         {
@@ -27,20 +27,11 @@ public sealed class CompetitionsDeserializer
 
         Debug.Assert(tournamentsList != null);
 
-        var competitionDictionary = new Dictionary<Name<Competition>, Competition>();
-
-        foreach(var tournament in tournamentsList.Tournaments)
-        {
-            foreach(var competition in tournament.Competitions)
-            {
-                competitionDictionary.Add(
-                    new(competition.ExternalID),
-                    new(
-                        new(competition.ExternalID),
-                        new(competition.CompetitionID)));
-            }
-        }
-
-        return competitionDictionary;
+        return tournamentsList.Tournaments
+            .Select(x => x.Competitions
+                .Select(x =>
+                    new Competition(new(x.CompetitionID))))
+            .SelectMany(x => x)
+            .ToList();
     }
 }

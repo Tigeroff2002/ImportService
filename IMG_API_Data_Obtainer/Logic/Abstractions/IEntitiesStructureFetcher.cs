@@ -1,12 +1,11 @@
 ﻿using IMG_API_Data_Obtainer.EntitiesModels;
-using System.Diagnostics.Metrics;
 
 namespace IMG_API_Data_Obtainer.Logic.Abstractions;
 
 /// <summary>
 /// Дессериализатор структуры сущностей из внешних систем.
 /// </summary>
-public interface IEntitiesStructureDeserializer
+public interface IEntitiesStructureFetcher
 {
     /// <summary>
     /// Извлекает спорты.
@@ -23,11 +22,15 @@ public interface IEntitiesStructureDeserializer
     Task<IReadOnlyDictionary<Id<Sport>, Sport>> FetchSportsAsync(CancellationToken cancellationToken);
 
     /// <summary>
+    /// Извлекает 
+    /// </summary>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    Task<IReadOnlyList<Country>> FetchCountriesAsync(CancellationToken cancellationToken);
+
+    /// <summary>
     /// Извлекает чемпионаты.
     /// </summary>
-    /// <param name="sportId">
-    /// Идентификатор спорта.
-    /// </param>
     /// <param name="cancellationToken">
     /// Токен отмены операции.
     /// </param>
@@ -37,35 +40,32 @@ public interface IEntitiesStructureDeserializer
     /// <exception cref="OperationCanceledException">
     /// Если операция отменена.
     /// </exception>
-    Task<IReadOnlyDictionary<Id<Championship>, Championship>> FetchChampionshipsAsync(
-        Id<Sport> sportId,
-        CancellationToken cancellationToken);
+    Task<IReadOnlyList<Tournament>> FetchTournamentsAsync(CancellationToken cancellationToken);
 
     /// <summary>
-    /// Извлекает участников.
+    /// Извлекает соревнования.
     /// </summary>
-    /// <param name="sportId">
-    /// Идентификатор спорта.
-    /// </param>
     /// <param name="cancellationToken">
     /// Токен отмены операции.
     /// </param>
     /// <returns>
-    /// Словарь участников.
+    /// Словарь соревнований.
     /// </returns>
     /// <exception cref="OperationCanceledException">
     /// Если операция отменена.
     /// </exception>
-    Task<IReadOnlyDictionary<Id<Competitor>, Competitor>> FetchCompetitorsAsync(
-        Id<Sport> sportId,
-        CancellationToken cancellationToken);
+    Task<IReadOnlyList<Competition>> FetchCompetitionsAsync(CancellationToken cancellationToken);
+
+    /// <summary>
+    /// Извлекает команды.
+    /// </summary>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    Task<IReadOnlyList<Team>> FetchTeamsAsync(CancellationToken cancellationToken);
 
     /// <summary>
     /// Извлекает матчи.
     /// </summary>
-    /// <param name="sportId">
-    /// Идентификатор спорта.
-    /// </param>
     /// <param name="cancellationToken">
     /// Токен отмены операции.
     /// </param>
@@ -75,9 +75,7 @@ public interface IEntitiesStructureDeserializer
     /// <exception cref="OperationCanceledException">
     /// Если операция отменена.
     /// </exception>
-    Task<IReadOnlyDictionary<Id<Match>, Match>> FetchMatchesAsync(
-        Id<Sport> sportId,
-        CancellationToken cancellationToken);
+    Task<IReadOnlyList<Match>> FetchMatchesAsync(CancellationToken cancellationToken);
 
     /// <summary>
     /// Извлекает идентификаторы удаленных матчей.
@@ -91,24 +89,5 @@ public interface IEntitiesStructureDeserializer
     /// <exception cref="OperationCanceledException">
     /// Если операция отменена.
     /// </exception>
-    Task<IReadOnlyCollection<Id<Match>>> FetchDeletedMatchesAsync(CancellationToken cancellationToken);
-
-    /// <summary>
-    /// Извлекает соревнования.
-    /// </summary>
-    /// <param name="sportId">
-    /// Идентификатор спорта.
-    /// </param>
-    /// <param name="cancellationToken">
-    /// Токен отмены операции.
-    /// </param>
-    /// <returns>
-    /// Словарь соревнований.
-    /// </returns>
-    /// <exception cref="OperationCanceledException">
-    /// Если операция отменена.
-    /// </exception>
-    Task<IReadOnlyDictionary<Id<Competition>, Competition>> FetchCompetitionsAsync(
-        Id<Sport> sportId,
-        CancellationToken cancellationToken);
+    Task<IReadOnlyList<Name<Match>>> FetchDeletedMatchesAsync(CancellationToken cancellationToken);
 }

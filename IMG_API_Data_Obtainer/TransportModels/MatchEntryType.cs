@@ -6,7 +6,5 @@
 public enum MatchEntryType
 {
     Standart,
-    Qualifier,
-    WildCard,
-    Alternate
+    Qualifier
 }

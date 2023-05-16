@@ -15,27 +15,22 @@ public sealed class FeedTeamDescription : MappableEntity<IntTeamDescription>
 
     public TeamType TeamType { get; }
 
-    public KnownTeamStatus KnownTeamStatus { get; }
-
     /// <summary>
     /// Создает экземпляр <see cref="FeedTeamDescription"/>.
     /// </summary>
     /// <param name="externalKey"></param>
     /// <param name="sportExternalKey"></param>
     /// <param name="name"></param>
-    /// <param name="knownTeamStatus"></param>
     /// <param name="teamType"></param>
     public FeedTeamDescription(
         ExternalID<IntTeamDescription> externalKey,
         ExternalID<IntSportDescription> sportExternalKey,
         Name<FeedTeamDescription> name,
-        KnownTeamStatus knownTeamStatus,
         TeamType teamType)
         : base(externalKey)
     {
         SportExternalKey = sportExternalKey;
         Name = name;
         TeamType = teamType;
-        KnownTeamStatus = knownTeamStatus;
     }
 }

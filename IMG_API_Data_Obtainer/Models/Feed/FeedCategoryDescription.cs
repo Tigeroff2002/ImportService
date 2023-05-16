@@ -9,9 +9,9 @@ namespace IMG_API_Data_Obtainer.Models.Feed;
 public sealed class FeedCategoryDescription : MappableEntity<IntCategoryDescription>
 {
     /// <summary>
-    /// Название категории.
+    /// Внешний ключ вида спорта (тенниса).
     /// </summary>
-    public Name<FeedCategoryDescription> Name { get; }
+    public ExternalID<IntSportDescription> SportExternalKey { get; }
 
     /// <summary>
     /// Создает экземпляр <see cref="FeedCategoryDescription"/>.
@@ -24,10 +24,10 @@ public sealed class FeedCategoryDescription : MappableEntity<IntCategoryDescript
     /// </param>
     public FeedCategoryDescription(
         ExternalID<IntCategoryDescription> externalKey,
-        Name<FeedCategoryDescription> name)
+        ExternalID<IntSportDescription> sportExternalKey)
         : base(externalKey)
     {
-        Name = name;
+        SportExternalKey = sportExternalKey;
     }
 }
 

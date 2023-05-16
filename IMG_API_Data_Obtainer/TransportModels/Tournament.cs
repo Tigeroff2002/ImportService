@@ -4,9 +4,6 @@ namespace IMG_API_Data_Obtainer.TransportModels;
 
 public sealed class Tournament
 {
-    [JsonProperty("identifier", Required = Required.Always)]
-    public long Identifier { get; init; }
-
     [JsonProperty("year", Required = Required.Always)]
     public int Year { get; init; }
 

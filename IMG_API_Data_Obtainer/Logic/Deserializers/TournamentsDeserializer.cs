@@ -8,9 +8,9 @@ using System.Diagnostics;
 namespace IMG_API_Data_Obtainer.Logic.Deserializers;
 
 public sealed class TournamentsDeserializer
-    : IDeserializer<string, IReadOnlyDictionary<Id<Tournament>, Tournament>>
+    : IDeserializer<string, IReadOnlyList<Tournament>>
 {
-    public IReadOnlyDictionary<Id<Tournament>, Tournament> Deserialize(string source)
+    public IReadOnlyList<Tournament> Deserialize(string source)
     {
         if (string.IsNullOrWhiteSpace(source))
         {
@@ -27,15 +27,19 @@ public sealed class TournamentsDeserializer
 
         Debug.Assert(tournamentsList != null);
 
-        return tournamentsList.Tournaments.ToDictionary(
-            tournament => new Id<Tournament>(tournament.Identifier),
-            tournament => 
-                new Tournament(
-                    new(tournament.Identifier),
-                    new(tournament.CountryCode.GetHashCode()),
-                    new(SPORT_TENNIS_ID),
-                    new(tournament.TournamentName),
-                    tournament.Year));
+        return tournamentsList.Tournaments
+            .Select(
+                tournament => 
+                    new Tournament(
+                        new($"{tournament.TournamentName} {tournament.Year}"),
+                        new(tournament.TournamentName),
+                        new(SPORT_TENNIS_ID),
+                        new(tournament.CountryCode),
+                        tournament.Year,
+                        tournament.Competitions
+                            .Select(competition => competition.CompetitionID)
+                            .ToList()))
+            .ToList();
     }
 
     private const long SPORT_TENNIS_ID = 5L;

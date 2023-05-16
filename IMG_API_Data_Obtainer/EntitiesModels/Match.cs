@@ -13,6 +13,11 @@ public sealed class Match : IEquatable<Match>
     public Name<Match> Id { get; }
 
     /// <summary>
+    /// Название матча.
+    /// </summary>
+    public Name<Match> Name { get; }
+
+    /// <summary>
     /// Время начала матча.
     /// </summary>
     public DateTimeOffset ScheduledStart { get; }
@@ -23,12 +28,12 @@ public sealed class Match : IEquatable<Match>
     public Name<Competition> CompetitionId { get; }
 
     /// <summary>
-    /// Полное название команды A.
+    /// Идентификатор команды A.
     /// </summary>
     public Name<Team> TeamA { get; }
 
     /// <summary>
-    /// Полное название команды B.
+    /// Идентификатор команды B.
     /// </summary>
     public Name<Team> TeamB { get; }
 
@@ -38,39 +43,50 @@ public sealed class Match : IEquatable<Match>
     public bool IsCancelled { get; }
 
     /// <summary>
+    /// Тип команды, принимающей участие в матче.
+    /// </summary>
+    public TeamType TeamType { get; }
+
+    /// <summary>
     /// Тип матча.
     /// </summary>
-    public TeamType MatchType { get;  }
+    public RawMatchType MatchType { get; }
 
     /// <summary>
     /// Создает экземпляр <see cref="Match"/>.
     /// </summary>
     /// <param name="id"></param>
+    /// <param name="matchName">
+    /// </param>
+    /// <param name="competitionId">
+    /// </param>
     /// <param name="scheduledStart"></param>
-    /// <param name="championshipId"></param>
     /// <param name="teamA"></param>
     /// <param name="teamB"></param>
     /// <param name="isCancelled"></param>
     /// <param name="matchType"></param>
+    /// <param name="teamType"></param>
     public Match(
         Name<Match> id,
+        Name<Match> matchName,
         DateTimeOffset scheduledStart,
         Name<Competition> competitionId,
         Name<Team> teamA,
         Name<Team> teamB,
         bool isCancelled,
-        TeamType matchType)
+        RawMatchType matchType,
+        TeamType teamType)
     {
         Id = id;
+        Name = matchName;
         ScheduledStart = scheduledStart;
         CompetitionId = competitionId;
         TeamA = teamA;
         TeamB = teamB;
         IsCancelled = isCancelled;
         MatchType = matchType;
+        TeamType = teamType;
     }
-
-
 
     /// <inheritdoc/>
     public override bool Equals(object? obj) => Equals(obj as Match);

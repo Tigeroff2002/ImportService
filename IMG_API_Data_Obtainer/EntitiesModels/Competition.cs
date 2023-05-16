@@ -10,5 +10,4 @@
 /// Название соревнования.
 /// </param>
 public sealed record class Competition(
-    Name<Competition> Id,
     Name<Competition> Name);

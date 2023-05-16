@@ -47,9 +47,6 @@ public sealed class FeedEventDescription : MappableEntity<IntEventDescription>
     /// <param name="championshipExternalKey">
     /// Идентификатор чемпионата.
     /// </param>
-    /// <param name="matchType">
-    /// Тип матча.
-    /// </param>
     /// <param name="scheduledStart">
     /// Запланированное время старта матча.
     /// </param>

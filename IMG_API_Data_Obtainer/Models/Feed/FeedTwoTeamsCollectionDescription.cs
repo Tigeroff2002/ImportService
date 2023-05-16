@@ -18,4 +18,17 @@ public sealed class FeedTwoTeamsCollectionDescription
     /// Внешний идентификатор команды B.
     /// </summary>
     public ExternalID<IntTeamDescription> TeamB { get; }
+
+    public FeedTwoTeamsCollectionDescription(
+        ExternalID<IntTeamDescription> teamA,
+        ExternalID<IntTeamDescription> teamB)
+    {
+        if (teamA == teamB)
+        {
+            throw new ArgumentException($"Team A and team B have similar external id = {teamA.Value}");
+        }
+
+        TeamA = teamA;
+        TeamB = teamB;
+    }
 }

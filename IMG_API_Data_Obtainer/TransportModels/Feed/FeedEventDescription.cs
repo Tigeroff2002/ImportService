@@ -14,10 +14,16 @@ public sealed class FeedEventDescription : FeedDescriptionBase
     public ExternalID ChampionshipExternalKey { get; init; } = default!;
 
     /// <summary>
-    /// Тип теннисного матча.
+    /// Тип команды, участвующей в матче.
     /// </summary>
-    [JsonProperty("match_type", Required = Required.Always)]
-    public MatchType MatchType { get; init; }
+    [JsonProperty("team_type", Required = Required.Always)]
+    public TeamType TeamType { get; }
+
+    /// <summary>
+    /// Тип проведения матча.
+    /// </summary>
+    [JsonProperty("entry_type", Required = Required.Always)]
+    public MatchEntryType MatchEntryType { get; }
 
     /// <summary>
     /// Дата и время события.

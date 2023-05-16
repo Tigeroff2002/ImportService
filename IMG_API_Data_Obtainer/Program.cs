@@ -4,7 +4,7 @@
 using var host = Host.CreateDefaultBuilder(args).ConfigureServices(
     services =>
     {
-        services.AddLogic();
+        services.AddImportLogic();
     })
     .Build();
 

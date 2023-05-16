@@ -30,4 +30,7 @@ public sealed class FeedChampionshipDescription : FeedDescriptionBase
     /// </summary>
     [JsonProperty("year", Required = Required.Default)]
     public int Year { get; init; }
+
+    [JsonProperty("match_type", Required = Required.Always)]
+    public RawMatchType MatchType { get; init; }
 }

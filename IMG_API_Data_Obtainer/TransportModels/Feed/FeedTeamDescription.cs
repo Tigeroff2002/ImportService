@@ -18,7 +18,4 @@ public sealed class FeedTeamDescription
 
     [JsonProperty("team_type", Required = Required.Always)]
     public TeamType TeamType { get; init; }
-
-    [JsonProperty("known_team_status", Required = Required.Always)]
-    public KnownTeamStatus KnownTeamStatus { get; }
 }

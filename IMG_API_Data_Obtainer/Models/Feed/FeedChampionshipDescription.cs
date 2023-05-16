@@ -1,5 +1,6 @@
 ﻿using IMG_API_Data_Obtainer.EntitiesModels;
 using IMG_API_Data_Obtainer.Models.Internal;
+using IMG_API_Data_Obtainer.TransportModels;
 
 namespace IMG_API_Data_Obtainer.Models.Feed;
 
@@ -26,7 +27,12 @@ public sealed class FeedChampionshipDescription : MappableEntity<IntChampionship
     /// <summary>
     /// Год проведения чемпионата.
     /// </summary>
-    public int Year { get;  }
+    public int Year { get; }
+
+    /// <summary>
+    /// Набор параметров матча.
+    /// </summary>
+    public RawMatchType MatchType { get; }
 
     /// <summary>
     /// Создает экземпляр <see cref="FeedChampionshipDescription"/>.
@@ -51,12 +57,14 @@ public sealed class FeedChampionshipDescription : MappableEntity<IntChampionship
         ExternalID<IntSportDescription> sportExternalKey,
         ExternalID<IntCategoryDescription> categoryExternalKey,
         Name<FeedChampionshipDescription> name,
-        int year)
+        int year,
+        RawMatchType matchType)
         : base(externalKey)
     {
         SportExternalKey = sportExternalKey;
         CategoryExternalKey = categoryExternalKey;
         Name = name;
         Year = year;
+        MatchType = matchType;
     }
 }
